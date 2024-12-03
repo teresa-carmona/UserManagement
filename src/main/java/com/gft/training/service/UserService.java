@@ -13,8 +13,12 @@ import java.util.Map;
 @Slf4j
 public class UserService {
 
-    private final static LocalRepository repository = LocalRepository.getInstance();
+private final LocalRepository repository;
     private int nextId = 1;
+
+    public UserService(LocalRepository repository) {
+        this.repository = repository;
+    }
 
     public void logMessage() {
         log.info("UserService initialized");
@@ -55,21 +59,18 @@ public class UserService {
     }
 
     // List all users
-    public void listUsers() {
+    public Map<Integer, User> listUsers() {
         log.info("\nList of existing users:");
         Map<Integer, User> users = repository.findAll();
         for (Map.Entry<Integer, User> entry : users.entrySet()) {
             log.info("ID: " + entry.getKey() + ", " + entry.getValue());
         }
+        return users;
     }
 
     // Delete a user and reorganise ids
     public void deleteUser(int id) throws NoUserException {
         User user = repository.find(id);
-        if (user == null) {
-            log.error("No user found for id {}", id);
-            throw new NoUserException("User not found");
-        }
         repository.delete(id);
 
         // Get rest of users and reorganise keys

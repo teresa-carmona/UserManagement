@@ -3,6 +3,7 @@ package com.gft.training;
 import com.gft.training.exception.NoUserException;
 import com.gft.training.exception.UserValidationException;
 import com.gft.training.model.User;
+import com.gft.training.repository.LocalRepository;
 import com.gft.training.service.UserService;
 
 import java.util.Scanner;
@@ -13,7 +14,8 @@ public class Main {
 
 
     public static void main(String[] args) {
-        UserService userService = new UserService();
+        LocalRepository repository = LocalRepository.getInstance();
+        UserService userService = new UserService(repository);
 //        userService.logMessage();
 
         while (true) {
