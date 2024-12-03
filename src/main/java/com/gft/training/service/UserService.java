@@ -30,21 +30,23 @@ public class UserService {
 
     // Add a new user
     public void addUser(String name, int age) throws UserValidationException {
-        // Validar nombre
+        // Validate name
         if (name == null || name.trim().isEmpty()) {
+            log.error("No name specified");
             throw new UserValidationException("Name cannot be empty");
         }
 
-        // Validar edad
+        // Validate age
         if (age < 0) {
+            log.error("Age received was negative");
             throw new UserValidationException("Age must be a positive number");
         }
 
-        // Crear y guardar el usuario
+        // Store user
         User user = new User(name, age);
         repository.save(nextId++, user);
 
-        System.out.println("\n User " + name + " (age: " + age + ") successfully added");
+        log.info("\n User {} (age: {}) successfully added", name, age);
     }
 
     // Get a user
@@ -54,10 +56,10 @@ public class UserService {
 
     // List all users
     public void listUsers() {
-        System.out.println("\nList of existing users:");
+        log.info("\nList of existing users:");
         Map<Integer, User> users = repository.findAll();
         for (Map.Entry<Integer, User> entry : users.entrySet()) {
-            System.out.println("ID: " + entry.getKey() + ", " + entry.getValue());
+            log.info("ID: " + entry.getKey() + ", " + entry.getValue());
         }
     }
 
@@ -65,6 +67,7 @@ public class UserService {
     public void deleteUser(int id) throws NoUserException {
         User user = repository.find(id);
         if (user == null) {
+            log.error("No user found for id {}", id);
             throw new NoUserException("User not found");
         }
         repository.delete(id);
@@ -80,7 +83,7 @@ public class UserService {
 
         // Update next value
         nextId = newId;
-        System.out.println("\n User " + user.getName() + " successfully deleted");
+        log.info("\n User " + user.getName() + " successfully deleted");
     }
 
 

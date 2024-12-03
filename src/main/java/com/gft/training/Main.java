@@ -13,9 +13,8 @@ public class Main {
 
 
     public static void main(String[] args) {
-        System.out.println("Hello, World!");
         UserService userService = new UserService();
-        userService.logMessage();
+//        userService.logMessage();
 
         while (true) {
             System.out.println("\n=== User Management ===");
@@ -68,7 +67,6 @@ public class Main {
             e.printStackTrace();
         }
 
-        System.out.println("\nUser successfully added: " + name + " (age: " + age + ")");
     }
 
     private static void findUserById(UserService userService) {
@@ -77,7 +75,6 @@ public class Main {
 
         User user = userService.getUser(id);
 
-        System.out.println("\nUser found: " + user.toString());
     }
 
     private static void listAllUsers(UserService userService) {
